@@ -1,37 +1,64 @@
 package stepDefinitions;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import org.junit.Assert;
+import io.cucumber.java.en.When;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pages.OpenNewAccountPage;
 import utils.DriverManager;
 
+import static org.junit.Assert.assertEquals;
+
 public class OpenNewAccountPageSteps {
-    private OpenNewAccountPage openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
 
-    @Given("I am on the Parabank open new account page")
-    public void i_am_on_the_parabank_open_new_account_page() {
-        DriverManager.getDriver().get("https://para.testar.org/parabank/openaccount.htm"); // Update with the correct URL if different
+    private static final Logger logger = LoggerFactory.getLogger(OpenNewAccountPageSteps.class);
+    private final OpenNewAccountPage openNewAccountPage;
+
+    public OpenNewAccountPageSteps() {
+        openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
     }
 
-    @When("I select the account type")
-    public void i_select_the_account_type() {
-        openNewAccountPage.selectAccountType("CHECKING"); // Update with the correct account type if different
+    @When("I am on the Parabank open new account page")
+    public void i_am_on_the_Parabank_open_new_account_page() {
+        openNewAccountPage.navigateToOpenNewAccountPage();
+        logger.info("Navigated to Parabank open new account page.");
     }
 
-    @When("I select the from account")
-    public void i_select_the_from_account() {
-        openNewAccountPage.selectFromAccount("106362"); // Update with the correct from account if different
+    @When("I select the account type as {string}")
+    public void i_select_the_account_type_as(String accountType) {
+        openNewAccountPage.selectAccountType(accountType);
+        logger.info("Selected account type as: {}", accountType);
+    }
+
+    @When("I select the from account as {string}")
+    public void i_select_the_from_account_as(String accountNumber) {
+        openNewAccountPage.selectFromAccount(accountNumber);
+        logger.info("Selected from account with number: {}", accountNumber);
     }
 
     @When("I click on the open new account button")
     public void i_click_on_the_open_new_account_button() {
-        openNewAccountPage.clickOpenNewAccount();
+        openNewAccountPage.submitNewAccountButton();
+        logger.info("Clicked on open new account button.");
     }
 
-    @Then("I should see a new account confirmation message")
-    public void i_should_see_a_new_account_confirmation_message() {
-        Assert.assertEquals("Account Opened Successfully!", openNewAccountPage.getConfirmationMessage()); // Update with the correct confirmation message if different
+    @Then("I should see a new account confirmation message as {string}")
+    public void i_should_see_a_new_account_confirmation_message_as(String expectedMessage) {
+        String actualMessage = openNewAccountPage.getConfirmationMessage();
+        assertEquals(expectedMessage, actualMessage);
+        logger.info("Verified account confirmation message: {}", expectedMessage);
+    }
+
+    @And("I go to Open New Account page")
+    public void iGoToOpenNewAccountPage() {
+        openNewAccountPage.navigateToOpenNewAccountPage();
+        logger.info("Navigated to Open New Account page.");
+    }
+
+    @And("I click on logout button")
+    public void iClickOnLogoutButton() {
+        openNewAccountPage.clickLogoutButton();
+        logger.info("Clicked on logout button.");
     }
 }

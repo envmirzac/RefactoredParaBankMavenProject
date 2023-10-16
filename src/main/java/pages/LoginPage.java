@@ -1,34 +1,45 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.DriverManager;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
-    private WebDriver driver = DriverManager.getDriver();
-    private By usernameField = By.name("username");
-    private By passwordField = By.name("password");
-    private By loginButton = By.xpath("//input[@value='Log In']");
+
+    private final WebDriver driver;
+
+    // Using @FindBy to declare WebElements
+    @FindBy(name = "username")
+    private WebElement usernameField;
+
+    @FindBy(name = "password")
+    private WebElement passwordField;
+
+    @FindBy(xpath = "//input[@value='Log In']")
+    private WebElement loginButton;
+
+    // This is the constructor for the LoginPage class.
+    // It takes a WebDriver object as an argument, which is used to initialize the driver instance variable.
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        // This method initializes the WebElements declared in the class (those with the @FindBy annotations).
+        PageFactory.initElements(driver, this);
+    }
 
     public void navigateToLoginPage() {
-        driver.get("http://para.testar.org/parabank/index.htm");
-// JavascriptExecutor js = (JavascriptExecutor) driver; // Keeping this line commented as it's not used
-//        js.executeScript("window.location='https://para.testar.org/parabank/index.htm?ConnType=JDBC';");
+        driver.get("http://localhost:8080/parabank/index.htm");
     }
 
     public void enterUsername(String username) {
-        driver.findElement(usernameField).sendKeys(username);
+        usernameField.sendKeys(username);
     }
 
     public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+        passwordField.sendKeys(password);
     }
 
     public void clickLoginButton() {
-        driver.findElement(loginButton).click();
-        // Removed return statement as OverviewPage is not used in this context.
+        loginButton.click();
     }
 }

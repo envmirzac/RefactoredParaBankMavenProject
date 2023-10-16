@@ -1,20 +1,27 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import utils.DriverManager;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 public class OverviewPage {
-    private WebDriver driver = DriverManager.getDriver();
-    private By openNewAccountLink = By.linkText("Open New Account");
-    private By accountsOverviewHeader = By.xpath("//h1[text()='Accounts Overview']");
 
-    public OpenNewAccountPage clickOpenNewAccountLink() {
-        driver.findElement(openNewAccountLink).click();
-        return new OpenNewAccountPage(driver); // Pass the driver to the constructor
+    private final WebDriver driver;
+
+    @FindBy(linkText = "Open New Account")
+    private WebElement openNewAccountLink;
+
+    @FindBy(xpath = "//h1[text()='Accounts Overview']")
+    private WebElement accountsOverviewHeader;
+
+    public OverviewPage(WebDriver driver) {
+        this.driver = driver;
+        // This method initializes the WebElements declared in the class (those with the @FindBy annotations).
+        PageFactory.initElements(driver, this);
     }
 
     public boolean isAtAccountsOverview() {
-        return driver.findElement(accountsOverviewHeader).isDisplayed();
+        return accountsOverviewHeader.isDisplayed();
     }
 }

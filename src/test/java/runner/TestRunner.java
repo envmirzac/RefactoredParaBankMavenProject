@@ -1,4 +1,4 @@
-package runners;
+package runner;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
@@ -9,7 +9,11 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "stepDefinitions",
         monochrome = true,
-        plugin = {"pretty", "html:target/cucumber-reports"}
+        plugin = {
+                "pretty",
+                "html:target/reports/Reports.html",
+                "json:target/reports/Cucumber.json"
+        }
 )
 public class TestRunner {
 }

@@ -1,0 +1,28 @@
+<configuration>
+    <!-- Console Appender Configuration -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg [%file:%line] %ex%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Rolling File Appender Configuration -->
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Use relative path for the log file -->
+        <file>target/myApp.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Ensure directory is specified in fileNamePattern -->
+            <fileNamePattern>target/logs/myApp.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>60</maxHistory> <!-- Retains logs for 60 days -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg [%file:%line] %ex%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger Configuration -->
+    <root level="TRACE">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ROLLING" />
+    </root>
+</configuration>
