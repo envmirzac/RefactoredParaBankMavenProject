@@ -29,6 +29,7 @@ public class OpenNewAccountPage {
     @FindBy(xpath = "//p[text()='Congratulations, your account is now open.']")
     private WebElement confirmationMessage;
 
+    // This is the constructor for the LoginPage class.
     public OpenNewAccountPage(WebDriver driver) {
         this.driver = driver;
         // This method initializes the WebElements declared in the class (those with the @FindBy annotations).

@@ -9,12 +9,13 @@ import utils.DriverManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import utils.PropertiesUtil;
 
 public class LoginSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginSteps.class);
 
-    // Instantiate LoginPage and OverviewPage with the WebDriver from DriverManager
+    // Instantiate LoginPage and OverviewPage with the WebDriver from DriverManager class
     LoginPage loginPage = new LoginPage(DriverManager.getDriver());
     OverviewPage overviewPage = new OverviewPage(DriverManager.getDriver());
 
@@ -24,12 +25,15 @@ public class LoginSteps {
         logger.info("Navigated to the Parabank login page");
     }
 
-    @When("I enter hardcoded valid username and password")
-    public void i_enter_hardcoded_valid_username_and_password() {
-        loginPage.enterUsername("vmirzac");
-        loginPage.enterPassword("Endava2023");
-        logger.info("Entered hardcoded username and password");
+    @When("I enter valid username and password")
+    public void i_enter_valid_username_and_password() {
+        String username = PropertiesUtil.getProperty("username");
+        String password = PropertiesUtil.getProperty("password");
+        loginPage.enterUsername(username);
+        loginPage.enterPassword(password);
+        logger.info("Entered username and password from config file");
     }
+
 
     @When("I click on the login button")
     public void i_click_on_the_login_button() {

@@ -28,7 +28,7 @@ public class DriverManager {
                 if (driver == null) {
                     switch (browserType) {
                         case CHROME:
-                            System.setProperty("webdriver.chrome.driver", "src/main/resources/drivers/chromedriver.exe");
+                            System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
                             ChromeOptions chromeOptions = new ChromeOptions();
                             if (headless) {
                                 chromeOptions.addArguments("--headless");
@@ -36,7 +36,7 @@ public class DriverManager {
                             driver = new ChromeDriver(chromeOptions);
                             break;
                         case FIREFOX:
-                            System.setProperty("webdriver.gecko.driver", "src/main/resources/drivers/geckodriver.exe");
+                            System.setProperty("webdriver.gecko.driver", "src/test/resources/drivers/geckodriver.exe");
                             FirefoxOptions firefoxOptions = new FirefoxOptions();
                             if (headless) {
                                 firefoxOptions.addArguments("--headless");

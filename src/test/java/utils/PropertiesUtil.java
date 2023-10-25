@@ -1,24 +1,26 @@
 package utils;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
+import java.io.InputStream;
+import java.io.IOException;
 
 public class PropertiesUtil {
+    // 'private' means it's only accessible within this class, and 'static' means it's associated with the class, not instances of the class.
     private static final Properties properties = new Properties();
 
+    // This block (static) is executed when the class is loaded into memory, before any methods are called or new objects are created.
     static {
-        try {
-            // Adjusted path to use forward slashes
-            String propertiesFilePath = System.getProperty("user.dir") + "/src/test/java/utils/config.properties";
-            FileInputStream fileInputStream = new FileInputStream(propertiesFilePath);
-            properties.load(fileInputStream);
+        // The try-with-resources block automatically closes the 'InputStream' object once it's no longer needed,
+        try (InputStream inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
+            properties.load(inputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read properties from config.properties file.", e);
+            e.printStackTrace();
+            throw new RuntimeException("Failed to read config.properties file.");
         }
     }
 
+    // 'static' means the method is associated with the class, not instances.
     public static String getProperty(String key) {
+        // retrieves the property value corresponding to the passed key from the 'Properties' object.
         return properties.getProperty(key);
     }
 }

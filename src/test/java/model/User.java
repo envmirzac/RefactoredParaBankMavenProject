@@ -5,6 +5,7 @@ import javax.persistence.*;
 // The @Table annotation specifies the table's name in the database that this entity is mapped to.
 @Entity
 @Table(name = "users")
+
 public class User {
 
     // The @Id annotation specifies the primary key of the table.

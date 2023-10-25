@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "stepDefinitions",
         monochrome = true,
+        tags = "@Run or @SmokeTests and not @ignore",  // Corrected syntax
         plugin = {
                 "pretty",
                 "html:target/reports/Reports.html",
