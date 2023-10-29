@@ -7,9 +7,9 @@ import org.junit.Assert;
 import pages.OverviewPage;
 import utils.DriverManager;
 
-public class OverviewSteps {
+public class UI_OverviewSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(OverviewSteps.class); // Corrected the logger class reference
+    private static final Logger logger = LoggerFactory.getLogger(UI_OverviewSteps.class); // Corrected the logger class reference
     private final OverviewPage overviewPage = new OverviewPage(DriverManager.getDriver());
 
     @And("{string} account is visible on the Account Overview page")

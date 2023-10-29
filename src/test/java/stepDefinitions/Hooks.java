@@ -25,7 +25,7 @@ public class Hooks {
             scenario.attach(screenshotBytes, "image/png", "Failed Screenshot");
         }
 
-        DriverManager.closeDriver();
+        DriverManager.quitDriver();
 
         // Clear the ScenarioContext after each scenario
         ScenarioContext.getInstance().clearContext();

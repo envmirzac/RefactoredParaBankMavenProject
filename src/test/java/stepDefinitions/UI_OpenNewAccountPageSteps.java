@@ -10,12 +10,12 @@ import utils.DriverManager;
 
 import static org.junit.Assert.assertEquals;
 
-public class OpenNewAccountPageSteps {
+public class UI_OpenNewAccountPageSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(OpenNewAccountPageSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(UI_OpenNewAccountPageSteps.class);
     private final OpenNewAccountPage openNewAccountPage;
 
-    public OpenNewAccountPageSteps() {
+    public UI_OpenNewAccountPageSteps() {
         openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
     }
 

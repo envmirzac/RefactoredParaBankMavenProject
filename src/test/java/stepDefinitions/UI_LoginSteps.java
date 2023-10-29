@@ -11,9 +11,9 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import utils.PropertiesUtil;
 
-public class LoginSteps {
+public class UI_LoginSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginSteps.class);
+    private static final Logger logger = LoggerFactory.getLogger(UI_LoginSteps.class);
 
     // Instantiate LoginPage and OverviewPage with the WebDriver from DriverManager class
     LoginPage loginPage = new LoginPage(DriverManager.getDriver());

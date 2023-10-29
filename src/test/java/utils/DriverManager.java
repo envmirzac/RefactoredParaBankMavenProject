@@ -55,7 +55,7 @@ public class DriverManager {
         return getDriver(BrowserType.FIREFOX, true);
     }
 
-    public static void closeDriver() {
+    public static void quitDriver() {
         if (driver != null) {
             driver.quit();
             driver = null;
