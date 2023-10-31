@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Assert;
@@ -30,5 +31,12 @@ public class UI_OverviewSteps {
     @And("I click on the account overview button")
     public void iClickOnTheAccountOverviewButton() {
         overviewPage.submitAccountOverviewButton();
+    }
+
+    @Then("I should be taken to the Overview page")
+    public void i_should_be_taken_to_the_overview_page() {
+        boolean isAtOverview = overviewPage.isAtAccountsOverview();
+        Assert.assertTrue("Not on the Overview page", isAtOverview); // This will throw an AssertionError if isAtOverview is false
+        logger.info("Successfully navigated to the Overview page"); // This will only be reached if isAtOverview is true
     }
 }

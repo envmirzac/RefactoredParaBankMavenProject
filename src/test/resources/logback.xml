@@ -23,6 +23,12 @@
         </encoder>
     </appender>
     <!-- Configuration for the root logger, which is the parent of all loggers in the application -->
+<!--    FATAL-->
+<!--    ERROR-->
+<!--    WARN-->
+<!--    INFO-->
+<!--    DEBUG-->
+<!--    TRACE-->
     <root level="TRACE">
         <appender-ref ref="STDOUT" />
         <!-- Attaches the "STDOUT" appender (defined above) to the root logger, so log messages will be written to the console. -->

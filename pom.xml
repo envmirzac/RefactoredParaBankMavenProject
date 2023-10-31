@@ -52,23 +52,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>2.0.9</version>
         </dependency>
-
-        <!-- ReportPortal dependencies -->
-        <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>agent-java-cucumber</artifactId>
-            <version>5.1.4</version> <!-- Replace with the latest version -->
-        </dependency>
-        <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>logger-java-logback</artifactId>
-            <version>5.1.6</version> <!-- Replace with the latest version -->
-        </dependency>
-        <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>client-java</artifactId>
-            <version>5.1.22</version> <!-- Replace with the latest version -->
-        </dependency>
         <!-- Hibernate Core -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -93,59 +76,13 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>8.1.0</version>
         </dependency>
-
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
     <build>
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <version>3.11.0</version>-->
-<!--                <configuration>-->
-<!--                    <source>1.8</source>-->
-<!--                    <target>1.8</target>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                <version>3.1.2</version>-->
-<!--                <configuration>-->
-<!--                    <includes>-->
-<!--                        <include>*CucumberRunner.java</include>-->
-<!--                    </includes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            &lt;!&ndash; Adding Cucumber reporting plugin &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>net.masterthought</groupId>-->
-<!--                <artifactId>maven-cucumber-reporting</artifactId>-->
-<!--                <version>5.7.6</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>execution</id>-->
-<!--                        <phase>verify</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <projectName>ParaBankMavenProject</projectName>-->
-<!--                            <outputDirectory>${project.build.directory}/cucumber-html-reports</outputDirectory>-->
-<!--                            <jsonFiles>-->
-<!--                                <param>${project.build.directory}/cucumber-reports/*.json</param>-->
-<!--                            </jsonFiles>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
     </build>
-
 </project>

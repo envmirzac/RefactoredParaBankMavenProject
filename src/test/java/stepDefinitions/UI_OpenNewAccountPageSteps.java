@@ -13,11 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class UI_OpenNewAccountPageSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(UI_OpenNewAccountPageSteps.class);
-    private final OpenNewAccountPage openNewAccountPage;
-
-    public UI_OpenNewAccountPageSteps() {
-        openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
-    }
+    private final OpenNewAccountPage openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
 
     @When("I am on the Parabank open new account page")
     public void i_am_on_the_Parabank_open_new_account_page() {

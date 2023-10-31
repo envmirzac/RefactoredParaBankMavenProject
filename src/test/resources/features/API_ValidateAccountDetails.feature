@@ -1,5 +1,4 @@
 Feature: Validate Account Details
-
 @Run
   Scenario: Validate Account Details for a Specific Account
     Given I set the base URI from properties file

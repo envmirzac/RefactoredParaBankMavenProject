@@ -43,14 +43,14 @@ public class LoginPage {
     }
 
     public void enterPassword(String password) {
-        WebDriverWait wait = new WebDriverWait(driver, 30L); // Adjust time as needed
+        WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.elementToBeClickable(passwordField));
         passwordField.clear();
         passwordField.sendKeys(password);
     }
 
     public void clickLoginButton() {
-        WebDriverWait wait = new WebDriverWait(driver, 30L); // Adjust time as needed
+        WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
     }
 }

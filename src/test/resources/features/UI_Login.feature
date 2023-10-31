@@ -1,6 +1,5 @@
 Feature: Parabank Login Functionality
-
-  @Run
+@Run
   Scenario: Successful login to Parabank
     Given I am on the Parabank login page
     When I enter valid username and password

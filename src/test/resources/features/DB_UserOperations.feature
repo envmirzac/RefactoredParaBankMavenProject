@@ -1,5 +1,4 @@
 Feature: User Database Operations
-
   @Run
   Scenario: Insert a new user record into the users table
     Given I have a new user record with a random username and password

@@ -22,7 +22,7 @@ public class DBUserOperationsSteps {
     private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
 
     private String generateRandomUsername() {
-        int randomNumber = new Random().nextInt(900) + 100; // Between 100 and 999
+        int randomNumber = new Random().nextInt(9000) + 100; // Between 100 and 9999
         return "VictorMirzac" + randomNumber;
     }
 

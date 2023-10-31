@@ -15,9 +15,8 @@ public class UI_LoginSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(UI_LoginSteps.class);
 
-    // Instantiate LoginPage and OverviewPage with the WebDriver from DriverManager class
+    // Instantiate LoginPage with the WebDriver from DriverManager class
     LoginPage loginPage = new LoginPage(DriverManager.getDriver());
-    OverviewPage overviewPage = new OverviewPage(DriverManager.getDriver());
 
     @Given("I am on the Parabank login page")
     public void i_am_on_the_parabank_login_page() {
@@ -41,10 +40,4 @@ public class UI_LoginSteps {
         logger.info("Clicked on the login button");
     }
 
-    @Then("I should be taken to the Overview page")
-    public void i_should_be_taken_to_the_overview_page() {
-        boolean isAtOverview = overviewPage.isAtAccountsOverview();
-        Assert.assertTrue("Not on the Overview page", isAtOverview); // This will throw an AssertionError if isAtOverview is false
-        logger.info("Successfully navigated to the Overview page"); // This will only be reached if isAtOverview is true
-    }
     }

@@ -1,6 +1,5 @@
 Feature: Transfer funds between two accounts
-
-@Run
+  @Run
   Scenario: Transfer a valid amount between two accounts
     Given I set the base URI from properties file
     And I set the request parameters with fromAccountId "13455", toAccountId "13566" and amount "100"
