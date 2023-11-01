@@ -8,11 +8,13 @@ public class PropertiesUtil {
     private static final Properties properties = new Properties();
 
     // This block (static) is executed when the class is loaded into memory, before any methods are called or new objects are created.
+    //TODO try catch vs try catch finally . Checked vs Unchecked exceptions
     static {
         // The try-with-resources block automatically closes the 'InputStream' object once it's no longer needed,
         try (InputStream inputStream = PropertiesUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
+            // logger.error, how to print in logs.
             e.printStackTrace();
             throw new RuntimeException("Failed to read config.properties file.");
         }

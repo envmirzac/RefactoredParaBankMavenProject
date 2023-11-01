@@ -25,9 +25,13 @@ public class Hooks {
             scenario.attach(screenshotBytes, "image/png", "Failed Screenshot");
         }
 
-        DriverManager.quitDriver();
 
-        // Clear the ScenarioContext after each scenario
+        DriverManager.quitDriver();
+//TODO
+// Clear the ScenarioContext after each scenario
+// to learn Single Responsibility Principle
+// To split in 3 different hooks
+// UI scenarios to be specific for certain hooks
         ScenarioContext.getInstance().clearContext();
     }
 }

@@ -18,12 +18,13 @@ public class ScenarioContext {
         }
         return instance;
     }
-
+// saveToContext
     public void setContext(String key, Object value) {
         contextMap.put(key, value);
     }
 
     public <T> T getContext(String key) {
+        //getFromContext
         return (T) contextMap.get(key);
     }
 

@@ -23,6 +23,10 @@ public class ApiSteps {
     private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
 
     // This protected method returns a RequestSpecification object, either from the context or a new one if not present.
+
+    //TODO rename for clarity. "getRequest" is misleading (is it a GET request ? or just a request ?)
+    // Builder pattern
+
     protected RequestSpecification getRequest() {
         RequestSpecification request = scenarioContext.getContext("API_REQUEST");
         if (request == null) {
@@ -53,6 +57,7 @@ public class ApiSteps {
     public void iSetTheBaseURIFromPropertiesFile() {
         String baseUri = PropertiesUtil.getProperty("baseURI");
         RestAssured.baseURI = baseUri; // Setting the base URI for RestAssured.
+        // nu lasa cod comentat
 //        scenarioContext.setContext("BASE_URI", baseUri);
         logger.info("Base URI set to: {}", baseUri);
     }
@@ -61,14 +66,17 @@ public class ApiSteps {
     public void iShouldReceiveAStatusCodeOf(int statusCode) {
         Response response = scenarioContext.getContext("API_RESPONSE");
         int actualStatusCode = response.getStatusCode();
-        assertThat(actualStatusCode).isEqualTo(statusCode);
+// logurile informative, inainte de Assert
+        // All logs
         logger.info("Expected status code: {}, Actual status code: {}", statusCode, actualStatusCode);
+        assertThat(actualStatusCode).isEqualTo(statusCode);
     }
 
     @And("^I set the request parameters with accountId \"([^\"]*)\" and amount \"([^\"]*)\"$")
     public void setRequestParameters(String accountId, String amount) {
-        getRequest().queryParam("accountId", accountId);
-        getRequest().queryParam("amount", amount);
+        getRequest().queryParam("accountId", accountId)
+                //can add as many params as necessary
+                .queryParam("amount", amount);
         logger.info("Request parameters set: accountId={}, amount={}", accountId, amount);
     }
 

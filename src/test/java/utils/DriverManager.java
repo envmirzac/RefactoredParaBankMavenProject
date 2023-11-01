@@ -24,12 +24,16 @@ public class DriverManager {
             // one will acquire the lock and proceed, while the other will have to wait. Once the first thread exits
             // the synchronized block, the second thread will enter and see that the driver is no longer null,
             // thus it won't create a new instance.
+            //TODO to remove synchronized
+            // to study multithreading.
             synchronized (DriverManager.class) {  // specific for Singleton Pattern
                 if (driver == null) {
                     switch (browserType) {
                         case CHROME:
+                            //To move to props
                             System.setProperty("webdriver.chrome.driver", "src/test/resources/drivers/chromedriver.exe");
                             ChromeOptions chromeOptions = new ChromeOptions();
+                            //To move to props
                             if (headless) {
                                 chromeOptions.addArguments("--headless");
                             }
@@ -52,7 +56,7 @@ public class DriverManager {
 
     // Overloaded getDriver method for using default values
     public static WebDriver getDriver() {
-        return getDriver(BrowserType.FIREFOX, true);
+        return getDriver(BrowserType.FIREFOX, false);
     }
 
     public static void quitDriver() {
