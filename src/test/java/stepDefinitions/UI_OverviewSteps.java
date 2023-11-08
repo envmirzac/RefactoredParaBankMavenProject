@@ -13,8 +13,8 @@ public class UI_OverviewSteps {
     private static final Logger logger = LoggerFactory.getLogger(UI_OverviewSteps.class); // Corrected the logger class reference
     private final OverviewPage overviewPage = new OverviewPage(DriverManager.getDriver());
 
-    @And("{string} account is visible on the Account Overview page")
-    public void accountIsVisibleOnTheAccountOverviewPage(String accountNumber) {
+    @And("the account {string} is visible on the Account Overview page")
+    public void theAccountIsVisibleOnTheAccountOverviewPage(String accountNumber) {
         boolean isVisible = overviewPage.isAccountVisible(accountNumber);
 
         // Logging for better traceability
@@ -28,13 +28,13 @@ public class UI_OverviewSteps {
         Assert.assertTrue("The expected account number is not visible on the Overview page.", isVisible);
     }
 
-    @And("I click on the account overview button")
-    public void iClickOnTheAccountOverviewButton() {
+    @And("navigation to the account overview is initiated")
+    public void navigationToTheAccountOverviewIsInitiated() {
         overviewPage.submitAccountOverviewButton();
     }
 
-    @Then("I should be taken to the Overview page")
-    public void i_should_be_taken_to_the_overview_page() {
+    @Then("the Overview page should be displayed")
+    public void the_overview_page_should_be_displayed() {
         boolean isAtOverview = overviewPage.isAtAccountsOverview();
         Assert.assertTrue("Not on the Overview page", isAtOverview); // This will throw an AssertionError if isAtOverview is false
         logger.info("Successfully navigated to the Overview page"); // This will only be reached if isAtOverview is true

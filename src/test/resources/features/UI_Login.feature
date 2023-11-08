@@ -1,7 +1,7 @@
 Feature: Parabank Login Functionality
-
+@Run
   Scenario: Successful login to Parabank
-    Given I am on the Parabank login page
-    When I enter valid username and password
-    And I click on the login button
-    Then I should be taken to the Overview page
+    Given the Parabank login page is displayed
+    When valid credentials are entered
+    And the login button is clicked
+    Then the Overview page should be displayed

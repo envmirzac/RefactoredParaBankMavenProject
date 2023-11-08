@@ -45,6 +45,7 @@ public class DriverManager {
                             if (headless) {
                                 firefoxOptions.addArguments("--headless");
                             }
+                            // cum se poate de avut aceeasi conditie pentru acelasi browser (diferite versiuni)
                             driver = new FirefoxDriver(firefoxOptions);
                             break;
                     }
@@ -56,7 +57,7 @@ public class DriverManager {
 
     // Overloaded getDriver method for using default values
     public static WebDriver getDriver() {
-        return getDriver(BrowserType.FIREFOX, false);
+        return getDriver(BrowserType.FIREFOX, true);
     }
 
     public static void quitDriver() {

@@ -2,27 +2,23 @@
 Feature: Parabank Open New Account Functionality
 
   Background: User is logged in and is on the Open New Account page
-    # Given
-    Given I am on the Parabank login page
-    # the user logins on the page
-    When I enter valid username and password
-    And I click on the login button
-    And I go to Open New Account page
+    Given the Parabank login page is displayed
+    When valid credentials are entered
+    And the login button is clicked
+    And navigation to the Open New Account page is completed
 
   Scenario Outline: Successful Opening of New Account
-    When I select the account type as "<accountType>"
-    And I select the from account as "<fromAccount>"
-    And I click on the open new account button
-    Then I should see a new account confirmation message as "<confirmationMessage>"
-    # the new acc conf message  ...
-    And I click on the account overview button
-    And I should be taken to the Overview page
-    And "<fromAccount>" account is visible on the Account Overview page
-    # To validate the new account
+    When the "<accountType>" account type is selected
+    And the source account "<fromAccount>" is chosen
+    And the open new account button is clicked
+    Then a confirmation message "<confirmationMessage>" is displayed for the new account
+    When navigation to the account overview is initiated
+    Then the Overview page should be displayed
+    And the account "<fromAccount>" is visible on the Account Overview page
 
     Examples:
       | accountType | fromAccount | confirmationMessage |
       | CHECKING    | 13566       | Congratulations, your account is now open. |
-#      | SAVINGS     | 13677       | Congratulations, your account is now open. |
-#      | CHECKING    | 13788       | Congratulations, your account is now open. |
-#      | SAVINGS     | 14232       | Congratulations, your account is now open. |
+      | SAVINGS     | 13677       | Congratulations, your account is now open. |
+      | CHECKING    | 13788       | Congratulations, your account is now open. |
+      | SAVINGS     | 14232       | Congratulations, your account is now open. |

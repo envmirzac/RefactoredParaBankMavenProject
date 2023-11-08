@@ -1,8 +1,11 @@
 Feature: DepositToAccount
 
   Scenario: DepositToAccount using POST method
-    Given I set the base URI from properties file
-    And I set the request parameters with accountId "13455" and amount "5000"
-    When I send a POST request to "/deposit"
-    Then I should receive a status code of 200
-    And I should see the message "Successfully deposited "$5000" to account "#13455""
+    Given the base URI is set from properties file
+    And the request parameters are set for account
+      | AccountId | amount |
+      | 13455     | 100    |
+    When a POST request is sent to "/deposit"
+    Then status code 200 is received
+    And the message "Successfully deposited "$100" to account "#13455"" is displayed
+

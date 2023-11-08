@@ -1,10 +1,10 @@
 Feature: Validate Account Details
 
   Scenario: Validate Account Details for a Specific Account
-    Given I set the base URI from properties file
-    When I make a GET request to "/accounts/13566"
-    Then I should receive a status code of 200
-    And I should validate the account details:
+    Given the base URI is set from properties file
+    When a GET request is sent to "/accounts/13566"
+    Then status code 200 is received
+    And the account details are displayed in the response body:
       | id         | 13566      |
       | customerId | 12434      |
       | type       | CHECKING   |
