@@ -1,38 +1,23 @@
 <configuration>
-    <!-- Configuration for the console appender, which outputs logging information to the console -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <!-- Specifies how log messages are formatted before being written to the console. -->
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg [%file:%line] %ex%n</pattern>
-            <!-- The pattern that formats the log message. It includes time, thread name, log level, logger name, message, file name, line number, and exception information. -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- Configuration for the rolling file appender, which writes logging information to a file and rotates it -->
+
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>target/myApp.log</file>
-        <!-- Specifies the path to the log file. Here, logs are written to "myApp.log" in the "target" directory. -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>target/logs/myApp.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- Specifies the naming pattern for archived log files, incorporating the date into the file name. -->
-            <maxHistory>3</maxHistory> <!-- Retains logs for 3 days -->
-            <!-- Sets the maximum number of days to keep archived log files. Older files are deleted. Here, it's set to 60 days. -->
-        </rollingPolicy>
+        <file>logs/myApp.log</file>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg [%file:%line] %ex%n</pattern>
-            <!-- The pattern that formats the log message. Similar to the console pattern, it includes various details about each log entry. -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/myApp.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
     </appender>
-    <!-- Configuration for the root logger, which is the parent of all loggers in the application -->
-<!--    FATAL-->
-<!--    ERROR-->
-<!--    WARN-->
-<!--    INFO-->
-<!--    DEBUG-->
-<!--    TRACE-->
-    <root level="TRACE">
+
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <!-- Attaches the "STDOUT" appender (defined above) to the root logger, so log messages will be written to the console. -->
         <appender-ref ref="ROLLING" />
-        <!-- Attaches the "ROLLING" appender (defined above) to the root logger, so log messages will also be written to the rolling log file. -->
     </root>
 </configuration>

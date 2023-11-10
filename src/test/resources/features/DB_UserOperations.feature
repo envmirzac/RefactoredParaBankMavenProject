@@ -1,4 +1,4 @@
-@db
+@db @Run
 Feature: User Database Operations
   Scenario: Insert a new user record into the users table
     Given a new user with a random username is created

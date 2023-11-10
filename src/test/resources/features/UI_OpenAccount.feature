@@ -1,4 +1,4 @@
-@ui
+@ui @Run
 Feature: Parabank Open New Account Functionality
 
   Background: User is logged in and is on the Open New Account page

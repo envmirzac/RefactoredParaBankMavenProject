@@ -1,4 +1,4 @@
-@ui
+@ui @Run
 Feature: Parabank Login Functionality
 
   Scenario: Successful login to Parabank

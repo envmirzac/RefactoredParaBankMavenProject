@@ -1,5 +1,5 @@
 Feature: DepositToAccount
-
+@Run
   Scenario: DepositToAccount using POST method
     Given the base URI is set from properties file
     And the request parameters are set for account
