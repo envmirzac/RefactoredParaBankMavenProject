@@ -1,5 +1,5 @@
-Feature: Transfer funds between two accounts
 
+Feature: Transfer funds between two accounts
   Scenario: Transfer a valid amount between two accounts
     Given the base URI is set from properties file
     And the request parameters are set

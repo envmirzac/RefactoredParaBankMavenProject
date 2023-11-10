@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pages.OpenNewAccountPage;
 import utils.DriverManager;
+import utils.ScenarioContext;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,6 +15,7 @@ public class UI_OpenNewAccountPageSteps {
 
     private static final Logger logger = LoggerFactory.getLogger(UI_OpenNewAccountPageSteps.class);
     private final OpenNewAccountPage openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
+    private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
 
     @And("navigation to the Open New Account page is completed")
     public void navigationToTheOpenNewAccountPageIsCompleted() {
@@ -42,15 +44,14 @@ public class UI_OpenNewAccountPageSteps {
     @Then("a confirmation message {string} is displayed for the new account")
     public void aConfirmationMessageIsDisplayedForTheNewAccount(String expectedMessage) {
         String actualMessage = openNewAccountPage.getConfirmationMessage();
-        assertEquals(expectedMessage, actualMessage);
         logger.info("Verified account confirmation message: {}", expectedMessage);
+        assertEquals(expectedMessage, actualMessage);
     }
 
-    // Uncomment and implement this method if it's applicable to your tests
-    // @And("the account {string} is visible on the Account Overview page")
-    // public void theAccountIsVisibleOnTheAccountOverviewPage(String accountNumber) {
-    //     boolean isVisible = openNewAccountPage.isAccountVisibleOnOverview(accountNumber);
-    //     assertEquals("Account is not visible on the overview page", true, isVisible);
-    //     logger.info("Account number: {} is visible on the Account Overview page.", accountNumber);
-    // }
+    @Then("the new account number is displayed on the Open New Account Page")
+    public void theNewAccountNumberIsDisplayedOnTheOpenNewAccountPage() {
+        String theNewAccount = openNewAccountPage.getNewAccountNumber();
+        scenarioContext.saveValueToScenarioContext("New_Account", theNewAccount);
+    }
+
 }

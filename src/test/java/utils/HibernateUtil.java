@@ -15,7 +15,7 @@ public class HibernateUtil {
             // Configure Hibernate with settings from hibernate.cfg.xml and then build a SessionFactory.
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable ex) {
-            // Catch any exceptions and throw an initialization error. This typically means there was an error creating a SessionFactory.
+            // Catch any exceptions and throw an initialization error. This means there was an error creating a SessionFactory.
             throw new ExceptionInInitializerError(ex);
         }
     }
@@ -24,4 +24,10 @@ public class HibernateUtil {
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+    public static void closeDbConnections() {
+        if (sessionFactory != null) {
+            sessionFactory.close();
+        }
+    }
 }
+

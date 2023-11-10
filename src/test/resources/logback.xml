@@ -29,7 +29,7 @@
 <!--    INFO-->
 <!--    DEBUG-->
 <!--    TRACE-->
-    <root level="INFO">
+    <root level="TRACE">
         <appender-ref ref="STDOUT" />
         <!-- Attaches the "STDOUT" appender (defined above) to the root logger, so log messages will be written to the console. -->
         <appender-ref ref="ROLLING" />

@@ -23,7 +23,6 @@ public class LoginPage {
     @FindBy(xpath = "//input[@value='Log In']")
     private WebElement loginButton;
 
-    // This is the constructor for the LoginPage class.
     public LoginPage(WebDriver driver) {
         this.driver = driver;
         // This method initializes the WebElements declared in the class (those with the @FindBy annotations).

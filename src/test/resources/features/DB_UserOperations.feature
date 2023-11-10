@@ -1,5 +1,5 @@
+@db
 Feature: User Database Operations
-
   Scenario: Insert a new user record into the users table
     Given a new user with a random username is created
     When the user is persisted in the database

@@ -33,13 +33,13 @@ public class DBUserOperationsSteps {
         User user = new User();
         user.setUsername(username);
         user.setPassword(fetchedPassword);
-        scenarioContext.setContext("RANDOM_USER", user);
+        scenarioContext.saveValueToScenarioContext("RANDOM_USER", user);
         logger.info("New user record created with username: {} and password: {}", username, fetchedPassword);
     }
 
     @When("the user is persisted in the database")
     public void theUserIsPersistedInTheDatabase() {
-        User user = scenarioContext.getContext("RANDOM_USER");
+        User user = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
         Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.save(user);
@@ -50,37 +50,37 @@ public class DBUserOperationsSteps {
 
     @Then("the record should exist in the users table with that random username")
     public void theRecordShouldExistInTheUsersTableWithThatRandomUsername() {
-        User user = scenarioContext.getContext("RANDOM_USER");
+        User user = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
         String actualUsername = user.getUsername();
         Session session = HibernateUtil.getSessionFactory().openSession();
         User retrievedUser = (User) session.createQuery("FROM User WHERE username = :username")
                 .setParameter("username", actualUsername)
                 .uniqueResult();
         session.close();
+        logger.info("Validated that user with username: {} exists in the database", actualUsername);
         assertNotNull(retrievedUser);
         assertEquals(actualUsername, retrievedUser.getUsername());
-        logger.info("Validated that user with username: {} exists in the database", actualUsername);
     }
 
     @When("the user is queried by its username")
     public void theUserIsQueriedByItsUsername() {
-        User expectedUser = scenarioContext.getContext("RANDOM_USER");
+        User expectedUser = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
         String expectedUsername = expectedUser.getUsername();
         Session session = HibernateUtil.getSessionFactory().openSession();
         User retrievedUser = (User) session.createQuery("FROM User WHERE username = :username")
                 .setParameter("username", expectedUsername)
                 .uniqueResult();
         session.close();
-        scenarioContext.setContext("QUERIED_USER", retrievedUser);
+        scenarioContext.saveValueToScenarioContext("QUERIED_USER", retrievedUser);
         logger.info("Queried for user with username: {}", expectedUsername);
     }
 
     @Then("the correct user details should be retrieved from the users table")
     public void theCorrectUserDetailsShouldBeRetrievedFromTheUsersTable() {
-        User expectedUser = scenarioContext.getContext("RANDOM_USER");
-        User queriedUser = scenarioContext.getContext("QUERIED_USER");
+        User expectedUser = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
+        User queriedUser = scenarioContext.getValueFromScenarioContext("QUERIED_USER");
+        logger.info("Received correct user details for username: {}", queriedUser.getUsername());
         assertNotNull(queriedUser);
         assertEquals(expectedUser.getUsername(), queriedUser.getUsername());
-        logger.info("Received correct user details for username: {}", queriedUser.getUsername());
     }
 }

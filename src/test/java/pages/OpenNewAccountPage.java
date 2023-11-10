@@ -29,6 +29,9 @@ public class OpenNewAccountPage {
     @FindBy(xpath = "//p[text()='Congratulations, your account is now open.']")
     private WebElement confirmationMessage;
 
+    @FindBy(xpath = "//a[@id='newAccountId']")
+    private WebElement newAccountNumber;
+
     // This is the constructor for the LoginPage class.
     public OpenNewAccountPage(WebDriver driver) {
         this.driver = driver;
@@ -68,5 +71,10 @@ public class OpenNewAccountPage {
     public void clickLogoutButton() {
         WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
+    }
+
+    public String getNewAccountNumber (){
+        WebDriverWait wait = new WebDriverWait(driver,30L);
+        return wait.until(ExpectedConditions.visibilityOf(newAccountNumber)).getText();
     }
 }

@@ -7,9 +7,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import utils.ScenarioContext;
 
 public class OverviewPage {
 
+    private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
+    String newAccOnOpenNewAccPage = scenarioContext.getValueFromScenarioContext("New_Account");
     private final WebDriver driver;
 
     @FindBy(xpath = "//h1[contains(text(), 'Accounts Overview')]")
@@ -19,8 +22,6 @@ public class OverviewPage {
     private WebElement accountsOverviewButton;
 
 
-
-    // Constructor for the OverviewPage class.
     public OverviewPage(WebDriver driver) {
         this.driver = driver;
         // This method initializes the WebElements declared in the class (those with the @FindBy annotations).
@@ -36,7 +37,6 @@ public class OverviewPage {
     }
 
     public boolean isAccountVisible(String accountNumber) {
-        // This is a dynamic Xpath based on the account account number mentioned in the "Examples" -> "fromAccount".
         String xpath = String.format("//a[contains(text(), '%s')]", accountNumber);
         // Waiting for the element with the account number to be present in the DOM.
         WebDriverWait wait = new WebDriverWait(driver, 10);
