@@ -3,19 +3,14 @@ package stepDefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pages.OpenNewAccountPage;
 import utils.DriverManager;
-import utils.ScenarioContext;
 
 import static org.junit.Assert.assertEquals;
 
-public class UI_OpenNewAccountPageSteps {
+public class UI_OpenNewAccountPageSteps extends BaseSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(UI_OpenNewAccountPageSteps.class);
     private final OpenNewAccountPage openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
-    private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
 
     @And("navigation to the Open New Account page is completed")
     public void navigationToTheOpenNewAccountPageIsCompleted() {

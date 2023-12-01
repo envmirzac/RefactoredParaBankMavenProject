@@ -16,7 +16,7 @@ public class User {
     @Column(name = "id")
     private Long id;
 
-    // This specifies the column details for the username. It should be unique and not nullable.
+    // This specifies the column details for the username. It should be unique and not nullable. (Encapsulation)
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -64,7 +64,8 @@ public class User {
         this.password = password;
     }
 
-    // Override the toString() method to print user details in a formatted manner.
+    // Override the toString() method to print user details in a formatted manner (e.g. : User{id=1, username='johndoe', password='password123'})
+    // "toString from Object class in Java, would look like this "model.User@7ab4ae59". Polymorphism
     @Override
     public String toString() {
         return "User{" +

@@ -1,28 +1,23 @@
 package stepDefinitions;
 
+import dao.UserDAO;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.User;
-import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import utils.HibernateUtil;
 import utils.PropertiesUtil;
-import utils.ScenarioContext;
 
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class DBUserOperationsSteps {
+public class DBUserOperationsSteps extends BaseSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(DBUserOperationsSteps.class);
-    private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
+    private final UserDAO userDao = new UserDAO();
 
     private String generateRandomUsername() {
-        int randomNumber = new Random().nextInt(9000) + 100; // Between 100 and 9999
+        int randomNumber = new Random().nextInt(9000) + 100;
         return "VictorMirzac" + randomNumber;
     }
 
@@ -30,9 +25,7 @@ public class DBUserOperationsSteps {
     public void aNewUserWithARandomUsernameIsCreated() {
         String fetchedPassword = PropertiesUtil.getProperty("userPassword");
         String username = generateRandomUsername();
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(fetchedPassword);
+        User user = new User(username, fetchedPassword);
         scenarioContext.saveValueToScenarioContext("RANDOM_USER", user);
         logger.info("New user record created with username: {} and password: {}", username, fetchedPassword);
     }
@@ -40,11 +33,7 @@ public class DBUserOperationsSteps {
     @When("the user is persisted in the database")
     public void theUserIsPersistedInTheDatabase() {
         User user = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
+        userDao.saveUser(user);
         logger.info("User record with username: {} inserted into the database", user.getUsername());
     }
 
@@ -52,11 +41,7 @@ public class DBUserOperationsSteps {
     public void theRecordShouldExistInTheUsersTableWithThatRandomUsername() {
         User user = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
         String actualUsername = user.getUsername();
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        User retrievedUser = (User) session.createQuery("FROM User WHERE username = :username")
-                .setParameter("username", actualUsername)
-                .uniqueResult();
-        session.close();
+        User retrievedUser = userDao.getUserByUsername(actualUsername);
         logger.info("Validated that user with username: {} exists in the database", actualUsername);
         assertNotNull(retrievedUser);
         assertEquals(actualUsername, retrievedUser.getUsername());
@@ -66,11 +51,7 @@ public class DBUserOperationsSteps {
     public void theUserIsQueriedByItsUsername() {
         User expectedUser = scenarioContext.getValueFromScenarioContext("RANDOM_USER");
         String expectedUsername = expectedUser.getUsername();
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        User retrievedUser = (User) session.createQuery("FROM User WHERE username = :username")
-                .setParameter("username", expectedUsername)
-                .uniqueResult();
-        session.close();
+        User retrievedUser = userDao.getUserByUsername(expectedUsername);
         scenarioContext.saveValueToScenarioContext("QUERIED_USER", retrievedUser);
         logger.info("Queried for user with username: {}", expectedUsername);
     }

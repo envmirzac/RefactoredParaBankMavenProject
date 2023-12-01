@@ -8,29 +8,29 @@ import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import utils.PropertiesUtil;
-import utils.ScenarioContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import io.restassured.path.xml.XmlPath;
 
 import java.util.List;
 import java.util.Map;
 
-public class ApiSteps {
+public class ApiSteps extends BaseSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(ApiSteps.class);
-    private final ScenarioContext scenarioContext = ScenarioContext.getInstance();
-
+    // using DRY principle -> if a RequestSpecification already exists in the context before creating a new one.
     protected RequestSpecification grabRequest() {
         RequestSpecification request = scenarioContext.getValueFromScenarioContext("API_REQUEST");
         if (request == null) {
+            logger.info("Creating a new RequestSpecification instance.");
             request = RestAssured.given();
             scenarioContext.saveValueToScenarioContext("API_REQUEST", request);
+        } else {
+            logger.info("Reusing existing RequestSpecification instance.");
         }
+
         return request;
     }
+
 
     @Given("^the base URI is set from properties file$")
     public void theBaseUriIsSetFromPropertiesFile() {
@@ -39,18 +39,25 @@ public class ApiSteps {
         logger.info("Base URI set to: {}", baseUri);
     }
 
-
     @And("^the request parameters are set$")
     public void theRequestParametersAreSet(DataTable dataTable) {
+        // Converts the DataTable into a list of maps. Each map represents a row in the table
+        // Each key-value pair in a map corresponds to a column header and its cell value in that row
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
-        Map<String, String> params = data.get(0);
-        String fromAccountId = params.get("fromAccountId");
-        String toAccountId = params.get("toAccountId");
-        String amount = params.get("amount");
-        grabRequest().queryParam("fromAccountId", fromAccountId)
-                .queryParam("toAccountId", toAccountId)
-                .queryParam("amount", amount);
-        logger.info("Request parameters set: fromAccountId={}, toAccountId={}, amount={}", fromAccountId, toAccountId, amount);
+        logger.info("Setting request parameters from DataTable.");
+        for (Map<String, String> params : data) {
+            logger.info("Request parameters for current iteration: {}", params);
+            setRequestParameters(params);
+        }
+    }
+
+
+    private void setRequestParameters(Map<String, String> params) {
+        //takes a map of parameters (params) and adds these parameters to the HTTP request.
+        RequestSpecification request = grabRequest();
+        //for each entry in the params map, use the "queryParam method to add params to "request""
+        params.forEach(request::queryParam);
+        logger.info("Request parameters set: {}", params);
     }
 
     @When("^a POST request is sent to \"([^\"]*)\"$")
@@ -58,6 +65,13 @@ public class ApiSteps {
         Response response = grabRequest().post(endpoint);
         scenarioContext.saveValueToScenarioContext("API_RESPONSE", response);
         logger.info("Sent POST request to: {}", endpoint);
+    }
+
+    // an overloaded method, that has an extra parameter "requestBody". Polymorphism
+    public void aPostRequestIsSentTo(String endpoint, String requestBody) {
+        Response response = grabRequest().body(requestBody).post(endpoint);
+        scenarioContext.saveValueToScenarioContext("API_RESPONSE", response);
+        logger.info("Sent POST request with body to: {}", endpoint);
     }
 
     @Then("^status code (\\d+) is received$")
@@ -75,9 +89,8 @@ public class ApiSteps {
         String expectedMessage = "Successfully transferred $" + amount + " from account #" + fromAccountId + " to account #" + toAccountId;
         String responseBody = response.getBody().asString();
         logger.info("Validated the response body contains: {}", expectedMessage);
-        assertThat(responseBody).contains(expectedMessage);
+        assertThat(responseBody).isEqualTo(expectedMessage);
     }
-
 
     @When("^a GET request is sent to \"([^\"]*)\"$")
     public void aGETRequestIsSentTo(String endpoint) {
@@ -86,50 +99,9 @@ public class ApiSteps {
         logger.info("Sent GET request to: {}", endpoint);
     }
 
-
-    @When("^I send a POST request to \"([^\"]*)\"$")
-    public void iSendAPostRequestTo(String endpoint) {
-        Response response = grabRequest().when().post(endpoint);
-        scenarioContext.saveValueToScenarioContext("API_RESPONSE", response);
-        logger.info("Sent POST request to: {}", endpoint);
-    }
-
-    @Given("^I set the base URI from properties file$")
-    public void iSetTheBaseURIFromPropertiesFile() {
-        String baseUri = PropertiesUtil.getProperty("baseURI");
-        RestAssured.baseURI = baseUri;
-        logger.info("Base URI set to: {}", baseUri);
-    }
-
-    @Then("^I should receive a status code of (\\d+)$")
-    public void iShouldReceiveAStatusCodeOf(int statusCode) {
-        Response response = scenarioContext.getValueFromScenarioContext("API_RESPONSE");
-        int actualStatusCode = response.getStatusCode();
-        logger.info("Expected status code: {}, Actual status code: {}", statusCode, actualStatusCode);
-        assertThat(actualStatusCode).isEqualTo(statusCode);
-    }
-
-    @And("^I set the request parameters with fromAccountId \"([^\"]*)\", toAccountId \"([^\"]*)\" and amount \"([^\"]*)\"$")
-    public void setTransferRequestParameters(String fromAccountId, String toAccountId, String amount) {
-        grabRequest().queryParam("fromAccountId", fromAccountId)
-                .queryParam("toAccountId", toAccountId)
-                .queryParam("amount", amount);
-        logger.info("Transfer parameters set: fromAccountId={}, toAccountId={}, amount={}", fromAccountId, toAccountId, amount);
-    }
-
-
-    @And("^I should see the transfer message \"Successfully transferred \"([^\"]*)\" from account \"([^\"]*)\" to account \"([^\"]*)\"\"$")
-    public void iShouldSeeTheTransferMessage(String amount, String fromAccountId, String toAccountId) {
-        Response response = scenarioContext.getValueFromScenarioContext("API_RESPONSE");
-        String expectedMessage = "Successfully transferred " + amount + " from account " + fromAccountId + " to account " + toAccountId;
-        String responseBody = response.getBody().asString();
-        logger.info("Validated the response body contains: {}", expectedMessage);
-        assertThat(responseBody).contains(expectedMessage);
-    }
-
     @And("^the account details are displayed in the response body:$")
     public void theAccountDetailsAreDisplayedInTheResponseBody(DataTable dataTable) {
-        // Transform the Cucumber DataTable into a Map for easy key-value access
+        // Transform the Cucumber DataTable into a Map
         Map<String, String> expectedDetails = dataTable.asMap(String.class, String.class);
         Response response = scenarioContext.getValueFromScenarioContext("API_RESPONSE");
         String xmlResponse = response.getBody().asString();
@@ -145,14 +117,12 @@ public class ApiSteps {
         }
     }
 
-
     @And("^the request parameters are set for account$")
     public void theRequestParametersAreSetForAccount(DataTable dataTable) {
         List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
         Map<String, String> params = data.get(0);
         String accountId = params.get("AccountId");
         String amount = params.get("amount");
-
         grabRequest().queryParam("accountId", accountId)
                 .queryParam("amount", amount);
         logger.info("New request parameters set: accountId={}, amount={}", accountId, amount);
@@ -166,4 +136,5 @@ public class ApiSteps {
         logger.info("Validated the response body contains: {}", expectedMessage);
         assertThat(responseBody).contains(expectedMessage);
     }
+
 }

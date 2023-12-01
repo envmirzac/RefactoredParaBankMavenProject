@@ -1,21 +1,13 @@
 package stepDefinitions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.junit.Assert;
 import pages.LoginPage;
-import pages.OverviewPage;
 import utils.DriverManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
-import io.cucumber.java.en.Then;
 import utils.PropertiesUtil;
 
-public class UI_LoginSteps {
+public class UI_LoginSteps extends BaseSteps {
 
-    private static final Logger logger = LoggerFactory.getLogger(UI_LoginSteps.class);
-
-    // Instantiate LoginPage with the WebDriver from DriverManager class
     LoginPage loginPage = new LoginPage(DriverManager.getDriver());
 
     @Given("the Parabank login page is displayed")

@@ -11,10 +11,11 @@ import org.slf4j.LoggerFactory;
 public class DriverManager {
     private static final Logger logger = LoggerFactory.getLogger(DriverManager.class);
     private static WebDriver driver;
-
     // private constructor to prevent instantiation from other classes
     private DriverManager() { }
 
+    //The driver is initialized here, the first time it is called. This is "lazy initialization", as the driver is created ONLY when needed(not at application startup)
+    // "static and public" ->  allows any part of the application to access the web driver instance. This is a  "global access point"
     public static WebDriver getDriver() {
         if (driver == null) {
             String browserType = PropertiesUtil.getProperty("browser.type");

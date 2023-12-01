@@ -8,6 +8,7 @@ import java.util.Properties;
 
 public class PropertiesUtil {
     private static final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+    // creates a "Properties" object to hold the key-value pairs from the properties file
     private static final Properties properties = new Properties();
 
     static {
@@ -18,10 +19,11 @@ public class PropertiesUtil {
             if (inputStream == null) {
                 throw new IOException("Property file 'config.properties' not found in the classpath");
             }
+            //properties from the file are loaded into the properties object.
             properties.load(inputStream);
         } catch (IOException e) {
             logger.error("Failed to read config.properties file.", e);
-            // Re-throw the exception as a RuntimeException
+            //this is to show that the failure is severe, and the application should not proceed without a valid configuration file
             throw new RuntimeException("Failed to read config.properties file.", e);
         }
     }

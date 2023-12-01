@@ -18,17 +18,15 @@ public class ScenarioContext {
         }
         return instance;
     }
-// saveToContext
+
     public void saveValueToScenarioContext(String key, Object value) {
         contextMap.put(key, value);
     }
 
     public <T> T getValueFromScenarioContext(String key) {
-        //getFromContext
         return (T) contextMap.get(key);
     }
 
-    // Added method to clear the context
     public void clearContext() {
         contextMap.clear();
     }

@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class OpenNewAccountPage {
-    private final WebDriver driver;
+    private final WebDriverWait wait;
 
     @FindBy(xpath = "//select[starts-with(@class, 'input')]")
     private WebElement accountTypeDropdown;
@@ -32,49 +32,37 @@ public class OpenNewAccountPage {
     @FindBy(xpath = "//a[@id='newAccountId']")
     private WebElement newAccountNumber;
 
-    // This is the constructor for the LoginPage class.
     public OpenNewAccountPage(WebDriver driver) {
-        this.driver = driver;
         // This method initializes the WebElements declared in the class (those with the @FindBy annotations).
         PageFactory.initElements(driver, this);
+        this.wait = new WebDriverWait(driver, 30L);
     }
 
     public void selectAccountType(String accountType) {
-        WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.visibilityOf(accountTypeDropdown));
         Select dropdown = new Select(accountTypeDropdown);
         dropdown.selectByVisibleText(accountType);
     }
 
     public void selectFromAccount(String accountNumber) {
-        WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.visibilityOf(fromAccountDropdown));
         Select dropdown = new Select(fromAccountDropdown);
         dropdown.selectByVisibleText(accountNumber);
     }
 
     public void submitNewAccountButton() {
-        WebDriverWait wait = new WebDriverWait(driver,30L);
         wait.until(ExpectedConditions.elementToBeClickable(openNewAccountButton)).click();
     }
 
     public String getConfirmationMessage() {
-        WebDriverWait wait = new WebDriverWait(driver, 30L);
         return wait.until(ExpectedConditions.visibilityOf(confirmationMessage)).getText();
     }
 
     public void navigateToOpenNewAccountPage() {
-        WebDriverWait wait = new WebDriverWait(driver, 30L);
         wait.until(ExpectedConditions.elementToBeClickable(openNewAccountLink)).click();
     }
 
-    public void clickLogoutButton() {
-        WebDriverWait wait = new WebDriverWait(driver, 30L);
-        wait.until(ExpectedConditions.elementToBeClickable(logoutButton)).click();
-    }
-
     public String getNewAccountNumber (){
-        WebDriverWait wait = new WebDriverWait(driver,30L);
         return wait.until(ExpectedConditions.visibilityOf(newAccountNumber)).getText();
     }
 }

@@ -3,7 +3,6 @@
     <session-factory>
         <!-- The 'session-factory' element is used to define a session factory. It contains all configurations, mappings, and database-specific settings. -->
 
-        <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <!-- Specifies the JDBC driver class to communicate with the MySQL database. -->
 
