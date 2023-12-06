@@ -1,4 +1,6 @@
 package stepDefinitions.hooks;
+
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -9,72 +11,111 @@ import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import org.slf4j.LoggerFactory;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class LoggingHook {
-    // Variable to hold the file appender for logging
-    private FileAppender<ILoggingEvent> fileAppender;
+    // File appenders for logging to feature-specific and archive log files (one for the current execution and one for archive).
+    private FileAppender<ILoggingEvent> featureLogAppender;
+    private FileAppender<ILoggingEvent> archiveLogAppender;
+    private String featureName;
+    // The logger instance that will be used to log messages for the feature.
+    private Logger featureLogger;
 
     @Before
     public void beforeScenario(Scenario scenario) {
-        try {
-            // Extract feature file name from the scenario's URI
-            String featureName = scenario.getUri().getPath();
-            featureName = featureName.substring(featureName.lastIndexOf('/') + 1);
-            featureName = featureName.replace(".feature", "");
+        // Extract the feature name from the scenario's URI.
+        featureName = extractFeatureName(scenario);
+        // Create a timestamp to uniquely identify this scenario run.
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss.SS"));
+        // Construct the filenames for the feature-specific and archived logs using the feature name and timestamp.
+        String featureLogFileName = featureName + "_" + timestamp + ".log";
+        String archiveLogFileName = featureName + "_" + timestamp + "_archived.log";
 
-            String logDirectoryPath = "target/logs/featureLogs";
-            Files.createDirectories(Paths.get(logDirectoryPath));
+        String featureLogDirectoryPath = "target/logs/featureLogs";
+        String archiveLogDirectoryPath = "ArchFeatureLogs";
+        // Ensure that the directories for the log files exist (create them if they don't exist).
+        ensureDirectoriesExist(featureLogDirectoryPath, archiveLogDirectoryPath);
 
-            // Obtain the current logger context
-            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
+        // Define the logger name to match with the package where actual logging calls are made.
+        String loggerName = "stepDefinitions";
+        // Retrieve the logger instance from the LoggerFactory.
+        featureLogger = (Logger) LoggerFactory.getLogger(loggerName);
+        featureLogger.setLevel(Level.DEBUG);
 
-            // Set up a pattern layout for formatting log messages
-            PatternLayout layout = new PatternLayout();
-            layout.setContext(loggerContext);
-            layout.setPattern("%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] - %msg%n");
-            layout.start();
+        // Set up the file appenders for logging.
+        featureLogAppender = setupLogging(featureLogDirectoryPath, featureLogFileName);
+        archiveLogAppender = setupLogging(archiveLogDirectoryPath, archiveLogFileName);
+    }
 
-            // Setup encoder to translate log events into a byte stream
-            LayoutWrappingEncoder<ILoggingEvent> encoder = new LayoutWrappingEncoder<>();
-            encoder.setLayout(layout);
-            encoder.setContext(loggerContext);
-            encoder.start();
+    // Method to extract the feature name from the scenario URI.
+    private String extractFeatureName(Scenario scenario) {
+        // Get the path part of the URI and extract the feature file name.
+        String featureName = scenario.getUri().getPath();
+        // Remove the ".feature" extension and return the feature name.
+        return featureName.substring(featureName.lastIndexOf('/') + 1).replace(".feature", "");
+    }
 
-            // Initialize the file appender with the encoder and file path
-            fileAppender = new FileAppender<>();
-            fileAppender.setContext(loggerContext);
-            fileAppender.setName("FEATURE_SPECIFIC_FILE_APPENDER");
-            fileAppender.setFile(logDirectoryPath + "/" + featureName + ".log");
-            fileAppender.setEncoder(encoder);
-            fileAppender.start();
+    // Method to set up a FileAppender for logging.
+    private FileAppender<ILoggingEvent> setupLogging(String logDirectoryPath, String logFileName) {
+        // Get the current logging context.
+        LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-            // Get root logger and attach new file appender
-            Logger rootLogger = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-            rootLogger.addAppender(fileAppender);
-        } catch (Exception e) {
-            // Throw runtime exception if setup fails
-            throw new RuntimeException("Could not set up feature-specific logging", e);
+        // Set up the log message format.
+        PatternLayout layout = new PatternLayout();
+        layout.setContext(loggerContext);
+        layout.setPattern("%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
+        layout.start();
+
+        // Set up the encoder to convert log events into byte streams.
+        LayoutWrappingEncoder<ILoggingEvent> encoder = new LayoutWrappingEncoder<>();
+        encoder.setLayout(layout);
+        encoder.setContext(loggerContext);
+        encoder.start();
+
+        // Create and configure the file appender.
+        FileAppender<ILoggingEvent> appender = new FileAppender<>();
+        appender.setContext(loggerContext);
+        appender.setName("FileAppender-" + logFileName);
+        appender.setFile(logDirectoryPath + "/" + logFileName);
+        appender.setEncoder(encoder);
+        appender.start();
+
+        // Add the file appender to the feature logger.
+        featureLogger.addAppender(appender);
+        // Allow the logger to pass logs up the hierarchy.
+        featureLogger.setAdditive(true);
+
+        return appender;
+    }
+
+    private void ensureDirectoriesExist(String... paths) {
+        for (String path : paths) {
+            try {
+                Files.createDirectories(Paths.get(path));
+            } catch (Exception e) {
+                throw new RuntimeException("Could not create directories for logging", e);
+            }
         }
     }
 
     @After
     public void afterScenario(Scenario scenario) {
-        // Check if the file appender is used
-        if (fileAppender != null) {
-            fileAppender.stop(); // Stop the file appender to close the file
-
-            LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-            String featureName = scenario.getUri().getPath();
-            featureName = featureName.substring(featureName.lastIndexOf('/') + 1);
-            featureName = featureName.replace(".feature", "");
-            // Get logger for the specific feature
-            Logger featureSpecificLogger = loggerContext.getLogger("FEATURE_SPECIFIC_LOGGER." + featureName);
-            // Detach the file appender from the feature-specific logger
-            featureSpecificLogger.detachAppender(fileAppender);
-            // Clean up by stopping all appenders associated with this logger
-            featureSpecificLogger.detachAndStopAllAppenders();
+        // Stop the file appenders, ensuring that all logs are flushed to disk.
+        if (featureLogAppender != null) {
+            featureLogAppender.stop();
+            // Detach the appender from the logger.
+            featureLogger.detachAppender(featureLogAppender);
+        }
+        if (archiveLogAppender != null) {
+            archiveLogAppender.stop();
+            featureLogger.detachAppender(archiveLogAppender);
         }
     }
 }
+
+
+
