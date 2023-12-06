@@ -6,7 +6,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import utils.PropertiesUtil;
 
-public class UI_LoginSteps extends BaseSteps {
+public class UI_LoginSteps extends BaseDefine {
 
     LoginPage loginPage = new LoginPage(DriverManager.getDriver());
 

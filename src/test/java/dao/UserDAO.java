@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import stepDefinitions.hooks.Hooks_DbConnectionsHook;
+import utils.SessionManager; // import the SessionManager
 
 public class UserDAO {
 
@@ -13,7 +13,8 @@ public class UserDAO {
 
     public void saveUser(User user) {
         Transaction transaction = null;
-        Session session = Hooks_DbConnectionsHook.getSession();
+        // Use SessionManager to get the session
+        Session session = SessionManager.getSession();
         try {
             transaction = session.beginTransaction();
             session.save(user);
@@ -29,7 +30,8 @@ public class UserDAO {
     }
 
     public User getUserByUsername(String username) {
-        Session session = Hooks_DbConnectionsHook.getSession();
+        // Use SessionManager to get the session
+        Session session = SessionManager.getSession();
         try {
             User user = session.createQuery("FROM User WHERE username = :username", User.class)
                     .setParameter("username", username)

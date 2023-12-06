@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 public class DriverManager {
     private static final Logger logger = LoggerFactory.getLogger(DriverManager.class);
     private static WebDriver driver;
+
     // private constructor to prevent instantiation from other classes
     private DriverManager() { }
 

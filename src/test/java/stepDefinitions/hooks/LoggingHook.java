@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class Hooks_LoggingHook {
+public class LoggingHook {
     // Variable to hold the file appender for logging
     private FileAppender<ILoggingEvent> fileAppender;
 
@@ -30,10 +30,10 @@ public class Hooks_LoggingHook {
             // Obtain the current logger context
             LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
-            // Set up a pattern layout for formatting log messages (will look like this: "2023-11-17 14:30:00 INFO [main] - This is a log message")
+            // Set up a pattern layout for formatting log messages
             PatternLayout layout = new PatternLayout();
             layout.setContext(loggerContext);
-            layout.setPattern("%date %level [%thread] - %msg%n");
+            layout.setPattern("%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] - %msg%n");
             layout.start();
 
             // Setup encoder to translate log events into a byte stream

@@ -6,7 +6,7 @@ import java.util.Map;
 public class ScenarioContext {
 
     private static ScenarioContext instance;
-    private final Map<String, Object> contextMap;
+    private final Map<ScenarioContextKeys.ScenarioContextKey, Object> contextMap;
 
     private ScenarioContext() {
         contextMap = new HashMap<>();
@@ -19,11 +19,11 @@ public class ScenarioContext {
         return instance;
     }
 
-    public void saveValueToScenarioContext(String key, Object value) {
+    public void saveValueToScenarioContext(ScenarioContextKeys.ScenarioContextKey key, Object value) {
         contextMap.put(key, value);
     }
 
-    public <T> T getValueFromScenarioContext(String key) {
+    public <T> T getValueFromScenarioContext(ScenarioContextKeys.ScenarioContextKey key) {
         return (T) contextMap.get(key);
     }
 

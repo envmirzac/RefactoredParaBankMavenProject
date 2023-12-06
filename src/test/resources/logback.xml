@@ -1,32 +1,24 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <!-- Pattern to format the log messages: time, thread name, log level, logger name, message, and newline -->
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>target/logs/myApp.log</file>
         <encoder>
-            <!-- Pattern: 12:34:56.789 [main] INFO com.example.MyClass - This is a sample log message -->
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
 
-        <!-- Define the rolling policy for log files -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>target/logs/myApp.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- Define the pattern for log file names: e.g: myApp.2023-11-21.log -->
             <maxHistory>1</maxHistory>
         </rollingPolicy>
     </appender>
 
-    <!-- Root logger configuration -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />
-        <!-- Reference the "STDOUT" appender for console logging -->
-
         <appender-ref ref="ROLLING" />
-        <!-- Reference the "ROLLING" appender for file logging -->
     </root>
 </configuration>

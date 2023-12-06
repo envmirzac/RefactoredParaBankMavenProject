@@ -5,10 +5,12 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.OpenNewAccountPage;
 import utils.DriverManager;
+import utils.ScenarioContext;
+import utils.ScenarioContextKeys;
 
 import static org.junit.Assert.assertEquals;
 
-public class UI_OpenNewAccountPageSteps extends BaseSteps {
+public class UI_OpenNewAccountPageSteps extends BaseDefine {
 
     private final OpenNewAccountPage openNewAccountPage = new OpenNewAccountPage(DriverManager.getDriver());
 
@@ -40,13 +42,14 @@ public class UI_OpenNewAccountPageSteps extends BaseSteps {
     public void aConfirmationMessageIsDisplayedForTheNewAccount(String expectedMessage) {
         String actualMessage = openNewAccountPage.getConfirmationMessage();
         logger.info("Verified account confirmation message: {}", expectedMessage);
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals("The confirmation message should match the expected message",
+                expectedMessage, actualMessage);
     }
 
     @Then("the new account number is displayed on the Open New Account Page")
     public void theNewAccountNumberIsDisplayedOnTheOpenNewAccountPage() {
         String theNewAccount = openNewAccountPage.getNewAccountNumber();
-        scenarioContext.saveValueToScenarioContext("New_Account", theNewAccount);
+        scenarioContext.saveValueToScenarioContext(ScenarioContextKeys.ScenarioContextKey.NEW_ACCOUNT, theNewAccount);
     }
 
 }

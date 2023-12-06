@@ -1,5 +1,5 @@
 Feature: Validate Account Details
-
+@Run
   Scenario: Validate Account Details for a Specific Account
     Given the base URI is set from properties file
     When a GET request is sent to "/accounts/13566"

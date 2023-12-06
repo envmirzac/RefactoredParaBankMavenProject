@@ -5,8 +5,10 @@ import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import pages.OverviewPage;
 import utils.DriverManager;
+import utils.ScenarioContext;
+import utils.ScenarioContextKeys;
 
-public class UI_OverviewSteps extends BaseSteps {
+public class UI_OverviewSteps extends BaseDefine {
 
     private final OverviewPage overviewPage = new OverviewPage(DriverManager.getDriver());
 
@@ -36,7 +38,7 @@ public class UI_OverviewSteps extends BaseSteps {
 
     @And("the new account number is visible on the Account Overview page")
     public void theNewAccountNumberIsVisibleOnTheAccountOverviewPage() {
-        String newAccountNumber = scenarioContext.getValueFromScenarioContext("New_Account");
+        String newAccountNumber = scenarioContext.getValueFromScenarioContext(ScenarioContextKeys.ScenarioContextKey.NEW_ACCOUNT);
         logger.info("New account number {} is visible on the Overview page", newAccountNumber);
         Assert.assertTrue("The new account number is not visible on the Overview page",
                 overviewPage.isAccountVisible(newAccountNumber));
