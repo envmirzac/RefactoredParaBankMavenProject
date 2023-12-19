@@ -5,15 +5,4 @@
       <excludeFolder url="file://$MODULE_DIR$/ArchFeatureLogs" />
     </content>
   </component>
-  <component name="FacetManager">
-    <facet type="hibernate" name="Hibernate">
-      <configuration>
-        <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="ea999345-559a-4c2d-af1a-f23a430e6b81" />
-        </datasource-map>
-        <naming-strategy-map />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/test/resources/hibernate.cfg.xml" />
-      </configuration>
-    </facet>
-  </component>
 </module>

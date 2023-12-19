@@ -13,7 +13,6 @@ public class UserDAO {
 
     public void saveUser(User user) {
         Transaction transaction = null;
-        // Use SessionManager to get the session
         Session session = SessionManager.getSession();
         try {
             transaction = session.beginTransaction();
@@ -30,7 +29,6 @@ public class UserDAO {
     }
 
     public User getUserByUsername(String username) {
-        // Use SessionManager to get the session
         Session session = SessionManager.getSession();
         try {
             User user = session.createQuery("FROM User WHERE username = :username", User.class)
