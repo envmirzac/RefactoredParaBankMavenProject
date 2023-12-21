@@ -41,16 +41,50 @@ public class ApiSteps extends BaseDefine {
     }
 
     @And("^the request parameters are set$")
+//    public void theRequestParametersAreSet(DataTable dataTable) {
+//        // Converts the DataTable into a list of maps. Each map represents a row in the table
+//        // Each key-value pair in a map corresponds to a column header and its cell value in that row
+//        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
+//        logger.info("Setting request parameters from DataTable.");
+//        for (Map<String, String> params : data) {
+//            logger.info("Request parameters for current iteration: {}", params);
+//            setRequestParameters(params);
+//        }
+//    }
+
+    //It passes each element from the stream (each map from the list of maps) to the setRequestParameters method
+//    public void theRequestParametersAreSet(DataTable dataTable) {
+//        dataTable.asMaps(String.class, String.class)
+//                .forEach(this::setRequestParameters);
+//    }
+
+
+    //  The params variable represents each element in the stream (each map from the list of maps),
+    //  and it's passed to the setRequestParameters method.
+
     public void theRequestParametersAreSet(DataTable dataTable) {
-        // Converts the DataTable into a list of maps. Each map represents a row in the table
-        // Each key-value pair in a map corresponds to a column header and its cell value in that row
-        List<Map<String, String>> data = dataTable.asMaps(String.class, String.class);
-        logger.info("Setting request parameters from DataTable.");
-        for (Map<String, String> params : data) {
-            logger.info("Request parameters for current iteration: {}", params);
-            setRequestParameters(params);
-        }
+        // Converts the provided DataTable into a List of Maps. Each map represents a row in the DataTable.
+        // The keys and values in each map are strings, corresponding to the column headers and cell values in the DataTable.
+        dataTable.asMaps(String.class, String.class)
+
+                // The forEach method is used to iterate over each map in the list.
+                // A lambda expression is provided to define the action to be performed on each element of the stream.
+                .forEach(params -> {
+                    // Inside the lambda expression, a logging statement is included.
+                    // This logs the parameters that are being processed in the current iteration.
+                    // The "{}" is a placeholder for the 'params' value, which will be logged.
+                    logger.info("Request parameters for current iteration: {}", params);
+
+                    // The setRequestParameters method is called with the current map of parameters.
+                    // This method is responsible for applying these parameters to the request.
+                    setRequestParameters(params);
+                });
     }
+
+
+
+
+
 
     private void setRequestParameters(Map<String, String> params) {
         //takes a map of parameters (params) and adds these parameters to the HTTP request.
